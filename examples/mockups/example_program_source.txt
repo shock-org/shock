@@ -1,0 +1,118 @@
+#
+# The current planned canonical Shock syntax
+#
+let main = proc (
+    argc: Int
+    argv: Array[Str]
+)
+    uses /std/io
+{
+    let x = 1
+    let y = 2
+    print (sum x y)
+    return 0
+}
+
+
+#
+# A reduced, Smalltalk-esque version of the Shock syntax
+#
+main: procedure (
+    argc: Integer
+    argv: Array of String
+) {
+    let x be 1.
+    let y be 2.
+    print x + y.
+    return 0 to os.
+}
+
+#
+# A Lisp-inspired version of the Shock program
+#
+(let (main
+    (lambda ([argc Integer]
+             [argv (Array string)])
+        (let (x 1)
+             (y 2)
+             (display (+ x y))
+             0))))
+
+#
+# A JSON hypothetical dump of the Shock program
+#
+'module': {
+    'main: {
+        'type': 'Procedure'
+        'data': {
+            'args': {
+                'argc': {
+                    'type': 'Integer',
+                },
+                'argv': {
+                    'type': 'Array[String]'
+                }
+            },
+            'body': {
+                '0': {
+                    'command-name': 'let',
+                    'args': {
+                        '0': {
+                            'type': 'Symbol',
+                            'data': 'x'
+                        },
+                        '1': {
+                            'type': 'Integer',
+                            'data': 1
+                        }
+                    }
+                },
+                '1': {
+                    'command-name': 'let',
+                    'args': {
+                        '0': {
+                            'type': 'Symbol',
+                            'data': 'y'
+                        },
+                        '1': {
+                            'type': 'Integer',
+                            'data': 2
+                        }
+                    }
+                }
+                '2': {
+                    'command-name': 'println',
+                    'args': {
+                        '0': {
+                            'type': 'Expr',
+                            'data': {
+                                '0': {
+                                    'command-name': 'sum',
+                                    'args': {
+                                        '0': {
+                                            'type': 'Symbol',
+                                            'data': 'x'
+                                        },
+                                        '1': {
+                                            'type': 'Symbol',
+                                            'data': 'y'
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                '3': {
+                    'command-name': 'return',
+                    'args': {
+                        '0': {
+                            'type': 'Integer',
+                            'data': 0
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
