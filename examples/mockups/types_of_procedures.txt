@@ -1,0 +1,49 @@
+# In Shock, there are many different types of procedures.
+#
+# This is support the different types of metaprogramming
+# and runtime programming.
+
+procedure (args) { body}
+proc (args) { body }
+
+- procedure represents the most basic procedure.
+  It can takes args and then execute a body.
+  procedures return [void] unless they return a value.
+  In that case, they will return the type of the value.
+- procedures are the most basic form of code composition
+
+macro (args) { body }
+
+- macro represent computation at compile-time. Macros
+  can act on the tuple-structure of types at compile-time,
+  including:
+
+  - type
+  - class
+  - procedure
+  - macro
+
+- Due to Shock's command-style system, macro can run commands
+  as sub-procedures to perform compile-time reflection.
+
+function (args) => { body }
+
+- function is Shock's pure procedure type. 
+- function cannot call stateful or mutating commands
+- functions can be called at compile-time over compile-time
+  structures, or at runtime with run-time types
+- functions will be computed or be attempted to be computed
+  at compile-time if fully-specialized
+
+template (args) => <result>
+
+- template is Shock's answer to quasiquote. Within the
+  template, argument variables can be placed with the $varname
+  escape mechanism
+ 
+Due to the way Shock's metaprogramming works, you too can
+define your own procedure types! Shock itself performs type
+checking of the compositon of a procedure in order to deside
+whether it is pure or not.
+
+
