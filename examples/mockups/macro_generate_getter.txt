@@ -1,0 +1,145 @@
+~/shock-project $ shock
+
+! Found project in current working directory.
+
+% let main = proc(argc: Int, argv: Array[Str]) { ... }
+
+(/module)
+$ insert class Point2D; focus .Point2D
+
+% let main = proc(argc: Int, argv: Array[Str]) { ... }
+% let Point2D = class { }
+
+(/module)
+$ focus .Point2D.body
+
+% Point2D .. {
+%% @
+% }
+
+(/module/Point2D)
+$ show more
+
+% <..> 			      : class Point2D
+% <.fields  : (Var)>          : ()
+% <.methods : (Class.Method)> : {}
+
+(/module/Point2D)
+$ focus .fields
+
+% class Point2D .. (
+%% @
+% ) --- { }
+
+(/module/Point2D/fields/0)
+$ insert first: Int
+
+% class Point2D .. (
+%% first: Int
+%% @
+% ) --- { }
+
+
+(/module/Point2D/fields/1)
+$ insert second: Int
+
+% class Point2D .. (
+%% first: Int
+%% second: Int
+%% @
+% ) --- { }
+
+(/module/Point2D/fields/2)
+$ fc ...
+
+% module ..
+% class Point2D (
+%% first: Int
+%% second: Int
+% ) {}
+
+(/module/Point2D/)
+$ fcmark point2d
+
+! Marked focus point as "point2d"
+
+(/module/Point2D/)
+$ fc ..
+
+% let main = proc(argc: Int, argv: Array[Str]) { ... }
+% let Point2D = class Point2D ( ... ) { ... } 
+
+(/module/)
+$ insert macro generate_setter
+
+% module ..
+% macro generate_setter () { }
+
+(/module/generate_setter)
+$ in .args insert c: Ref[Class]
+
+% module ..
+% macro generate_setter (c: Ref[Class]) { }
+
+(/module/generate_setter)
+$ fc .body
+
+% macro generate_setter ..
+% (c: Ref[Class])
+% {
+%% @
+% }
+
+(/module/generate_setter/body)
+$ insert foreach c in c.vars
+
+% macro generate_setter ..
+% (c: Ref[Class])
+% {
+%% foreach v in c.vars {
+%%% @
+%% }
+% }
+
+(/module/generate_setter/body/foreach_v)
+$ insert {
+$$ let method_name = (append 'get_' v.name)
+$$ in c insert method method_name
+$$ in method insert return this -> v.name
+$$ }
+
+% macro generate_setter
+% (c: Ref[Class])
+% {
+%% foreach v in c.vars .. {
+%%% let method_name = (append 'get_' v.name)
+%%% in c, insert method method_name
+%%% let method_ret_type = v.type
+%%% set c.(method_name).return_type = method_ret_type
+%%% in method, insert return this -> v.name
+%%% @
+%% }
+% }
+
+(/module/generate_setter/body/foreach_v)
+$ fc /module
+
+% let main = proc (argc: Int, argv: Array[Str]) { ... }
+% let Point2D = class ( ... ) { ... }
+% let generate_setter = macro (c: Ref[Class])
+
+(/module)
+$ (generate_setter Point2D)
+
+! Success.
+
+(/module)
+$ show more Point2D
+
+% class Point2D .. (
+%% first: Int
+%% second: Int
+% ) {
+%% get_first: method(=> Int) { return this->first }
+%% get_second: method=> Int) { return this->second }
+% }
